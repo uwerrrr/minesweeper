@@ -53,12 +53,13 @@ public class Cell extends GameObject{
     		this.isRevealed = true;
     }
     
-    @Override
-    public boolean equals(Object o) {
+    
+    // compare to other cell
+    public boolean equalsCell(Object o) {
         
         if (this == o) return true; // same memory ref
         if (o == null) return false; // null reference check
-        if (!(o instanceof Cell)) return false; // not from GameObject or its subclasses
+        if (!(o instanceof Cell)) return false; // not from Cell
         
         Cell otherCell = (Cell) o; // cast o to GameObject
         return x == otherCell.x && 
