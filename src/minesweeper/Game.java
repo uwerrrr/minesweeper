@@ -1,19 +1,10 @@
 package minesweeper;
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Game {
 	
-	final static int gameRow = 10;
-	final static int gameCol = 5;
-	final static int frameRow = gameRow+1;
-	final static int frameCol = gameCol+1;
-	final static int minX = 1;
-	final static int minY = 1;
-	final static int maxX = gameRow;
-	final static int maxY = gameCol;
-	final static int slotNum = gameRow * gameCol;
-    final static int mineNum = 8;
     final static String unrevealStr = "[ ]";
 
 	// display array method
@@ -34,7 +25,12 @@ public class Game {
 	
 	
 	// populate mines arr
-	public static ArrayList<Mine> populateMineArr(){
+	public static ArrayList<Mine> populateMineArr(int mineNum, int gameRow, int gameCol){
+		int minX = 1;
+		int minY = 1;
+		int maxX = gameRow;
+		int maxY = gameCol;
+		
 		//mines array
   		ArrayList<Mine> mines = new ArrayList<>();
   		
@@ -57,8 +53,12 @@ public class Game {
 	}
 
 	//create game frame and add mines to frame
-	public static Cell[][] createGameFrame(ArrayList<Mine> mines){
+	public static Cell[][] createFrameWMine(int gameRow, int gameCol, ArrayList<Mine> mines){
+		int frameRow = gameRow+1;
+		int frameCol = gameCol+1;
+		
 		Cell[][] frame = new Cell[frameRow][frameCol];
+		
 		int labelNum = 1;
 		for (int row = 0; row < frameRow; row++) {
 			for (int col = 0; col < frameCol; col++) {
@@ -73,7 +73,7 @@ public class Game {
 		  			cell.setRevealStr(String.valueOf(labelNum));
 		  			frame[row][col] = cell;
 		  			++labelNum;
-		  			labelNum = (labelNum == frameRow) ? 1 : labelNum;}
+		  			labelNum = (labelNum == frameCol && col == frameCol - 1) ? 1 : labelNum;}
 		  		
 		  		else {
 		  			cell.setUnrevealStr(unrevealStr);
@@ -128,4 +128,82 @@ public class Game {
 		}
 	}
 
+	
+	public static void revealCell(Cell[][] frame, Selection selection) {
+		frame[selection.x][selection.y].reveal();
+	}
+	
+	
+	public static void stop(Cell[][] frame) {
+		for (Cell[] rows : frame) {
+			for (Cell cell : rows) {
+				cell.reveal();
+			}
+		}
+		Game.displayFrame(frame);
+	}
+	
+	
+	// Validation inputs
+	
+	public static boolean isValidInteger(String input) {
+	    	try {
+	    		Integer.parseInt(input);
+	    		return true;
+	        } 
+	    	catch (NumberFormatException e) {
+	        return false;
+	        }
+     }
+	
+	public static boolean isValidInput(String input, String coordinateName, Cell[][] frame) {
+		int minX = 1;
+		int minY = 1;
+		int maxX = frame.length;
+		int maxY = frame[0].length;
+		
+//		System.out.println("isValidInteger(input): "+ isValidInteger(input));
+		
+    		if (isValidInteger(input) && coordinateName == "X") {
+    			int inputX = Integer.parseInt(input);
+    			if(inputX > maxX || inputX < minX) {
+    				System.out.println("Please enter a coordinate in range "+ "[" + minX + " - " + (maxX-1) + "]" + ".");
+    				return false;
+    			} else {
+    				return true;
+    			}
+    		} else if (isValidInteger(input) && coordinateName == "Y") {
+    			int inputY = Integer.parseInt(input);
+    			if(inputY > maxY || inputY < minY) {
+    				System.out.println("Please enter a coordinate in range "+ "[" + minY + " - " + (maxY-1) + "]" + ".");
+    				return false;
+    			} else {
+    				return true;
+    			}
+    		} else return false;
+  
+	}
+	 
+	public static int getValidInteger(Scanner scanner, String coordinateName, Cell[][] frame) {
+		int selectedCoordinate = 0;
+		System.out.println("Please enter " + coordinateName + " coordinate:");
+		   
+		// keep asking until receive 
+		while (true) {
+		 
+		    String input = scanner.nextLine();
+		    
+		    if(input == "exit") {
+		    		stop(frame);
+		    		break;}
+		    else if (isValidInput(input, coordinateName, frame)) {
+			    selectedCoordinate = Integer.parseInt(input);
+			    break;} 
+		    else {
+			    System.out.println("Invalid input. Please enter a valid integer for " + coordinateName + " coordinate.");
+//			
+			    }
+	    }
+	    return selectedCoordinate;
+	}
 }

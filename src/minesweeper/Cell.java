@@ -49,7 +49,7 @@ public class Cell extends GameObject{
 		this.revealStr = "["+ String.valueOf(mineNumArround) + "]";
     }
     
-    public void selected() {
+    public void reveal() {
     		this.isRevealed = true;
     }
     
