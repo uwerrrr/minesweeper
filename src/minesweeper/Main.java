@@ -10,13 +10,14 @@ import java.util.stream.Stream;
 public class Main {
 
 	public static void main(String[] args) {
-		final int gameRow = 12;
-		final int gameCol = 10;
-		int mineNum = 8;
 		
+		final int gameRow = 10;
+		final int gameCol = 10;
+		
+		int mineNum = 8;
 		boolean isWon = false;
 		boolean isLost = false;
-		boolean isFinished = false;
+		
 		
         //mines array
   		ArrayList<Mine> mines = Game.populateMineArr(mineNum, gameRow, gameCol);
@@ -36,74 +37,57 @@ public class Main {
 		
 		
 		// loop until game finish
-		while (isFinished) {
+		// The number of revealed cells without mines equals the total number of cells on the board minus the number of mines.
+		int totalCellNum = gameRow * gameCol;
+		int safeCellNum = totalCellNum - mineNum;
+		int selectedCellNum = 0;
 		
+		while (Game.isPlaying) {	
+			
 			int selectedX = Game.getValidInteger(s, "X", frame);
 			int selectedY = Game.getValidInteger(s, "Y", frame);
 			
 			System.out.println("selected [" + selectedX + " : "+ selectedY + "] cell.");
 			
 			Selection selection = new Selection(selectedX, selectedY);
-			Game.revealCell(frame, selection);
+			Cell selectedCell = frame[selection.x][selection.y];
 			
-			Game.displayFrame(frame);
+			selectedCell.reveal();
 			
+	
 			
-			if (frame[selection.x][selection.y].hasMine) {
+			if (selectedCell.hasMine) {
+				Game.displayFrame(frame);
 				isLost = true;
+			} else {
+				Game.displayFrame(frame);
+				++selectedCellNum;
+				if (selectedCellNum == safeCellNum) {
+					isWon = true;
+				}
 			}
 			
-		
+			
+			
+			
 			if (isWon) {
+				Game.isPlaying = false;
+				Game.stop(frame);
+				System.out.println("Congratulation!!!");
+				System.out.println("You won !!!!!!");
 				
-				isFinished = true;
-				Game.stop(frame);
 			} else if (isLost) {
-				isFinished = true;
+				Game.isPlaying = false;
 				Game.stop(frame);
+				System.out.println("Game over!!!");
+				System.out.println("Better luck next time :)");
 			}
 		
 		}
 		
-		
-		
-		
-		
-//		System.out.println("Please enter X coordinate");
-//		String inputX = s.nextLine();
-//		if (Game.isValidInteger(inputX) == true) {
-//			int selectedX = Integer.parseInt(inputX);
-//		} else {
-//			System.out.println("Invalid input. Please enter a valid integer for X coordinate.");
-//			s.next(); 
-//		}
-//		
-//		System.out.println("Please enter Y coordinate");
-//		String inputY = s.nextLine();
-//		if (Game.isValidInteger(inputY) == true) {
-//			int selectedY = Integer.parseInt(inputY);
-//		} else {
-//			System.out.println("Invalid input. Please enter a valid integer for Y coordinate.");
-//			s.next(); 
-//		}
-		
-//	
-	
-		
-		
-		
+		s.close();
 		
 
-		
-		
-		
-		
-		s.close();
-  		
-		
-		
-		
-		
 		
 		
 		
@@ -118,6 +102,10 @@ public class Main {
 		
 		
   		// testing corner
+		
+//		for (Mine mine : mines) {
+//			mine.printCoor();
+//		}
 		
 //		int[][] testFr = {{1,2,3},{4,5,6}};
 //		
@@ -139,9 +127,7 @@ public class Main {
 		
 
 		
-		
-		// display frame
-		Game.displayFrame(frame);
+
 	}
 
 

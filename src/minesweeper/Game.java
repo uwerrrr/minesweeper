@@ -6,6 +6,12 @@ import java.util.Scanner;
 public class Game {
 	
     final static String unrevealStr = "[ ]";
+    
+    public static boolean isPlaying = true;
+    
+    public void setIsPlaying(boolean status) {
+    		isPlaying = status;
+    }
 
 	// display array method
 	public static void displayFrame(Cell[][] frame) {
@@ -30,6 +36,9 @@ public class Game {
 		int minY = 1;
 		int maxX = gameRow;
 		int maxY = gameCol;
+		int totalCellNum = gameRow * gameCol;
+		
+		if (mineNum > gameRow * gameCol) mineNum = totalCellNum;
 		
 		//mines array
   		ArrayList<Mine> mines = new ArrayList<>();
@@ -129,10 +138,21 @@ public class Game {
 	}
 
 	
-	public static void revealCell(Cell[][] frame, Selection selection) {
-		frame[selection.x][selection.y].reveal();
+	public static void revealCell(Cell[][] frame, Cell selectedCell) {
+		selectedCell.reveal();
+			
 	}
 	
+	public static void revealNeiCells() {
+		
+	}
+//	int[]checkCoors = {-1,0,1};
+//	for (int coorX : checkCoors){
+//		for (int coorY : checkCoors) {
+//			int newX = coorX;
+//			int newY = coorY;
+//			
+//		}}	
 	
 	public static void stop(Cell[][] frame) {
 		for (Cell[] rows : frame) {
@@ -142,6 +162,8 @@ public class Game {
 		}
 		Game.displayFrame(frame);
 	}
+	
+	
 	
 	
 	// Validation inputs
@@ -166,7 +188,7 @@ public class Game {
 		
     		if (isValidInteger(input) && coordinateName == "X") {
     			int inputX = Integer.parseInt(input);
-    			if(inputX > maxX || inputX < minX) {
+    			if(inputX >= maxX || inputX < minX) {
     				System.out.println("Please enter a coordinate in range "+ "[" + minX + " - " + (maxX-1) + "]" + ".");
     				return false;
     			} else {
@@ -174,7 +196,7 @@ public class Game {
     			}
     		} else if (isValidInteger(input) && coordinateName == "Y") {
     			int inputY = Integer.parseInt(input);
-    			if(inputY > maxY || inputY < minY) {
+    			if(inputY >= maxY || inputY < minY) {
     				System.out.println("Please enter a coordinate in range "+ "[" + minY + " - " + (maxY-1) + "]" + ".");
     				return false;
     			} else {
@@ -193,9 +215,11 @@ public class Game {
 		 
 		    String input = scanner.nextLine();
 		    
-		    if(input == "exit") {
+		    if(input.equals("exit")) {
 		    		stop(frame);
-		    		break;}
+		    		isPlaying = false;
+		    		break;
+		    }
 		    else if (isValidInput(input, coordinateName, frame)) {
 			    selectedCoordinate = Integer.parseInt(input);
 			    break;} 
