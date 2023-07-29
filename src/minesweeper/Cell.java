@@ -40,6 +40,9 @@ public class Cell extends GameObject{
 		this.revealStr = revealStr;
 	}
     
+	public boolean getHasMine() {
+		return this.hasMine;
+	}
     public void setHasMine() {
     		this.hasMine = true;
     		this.revealStr = "[*]";

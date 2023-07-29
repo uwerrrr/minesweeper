@@ -47,12 +47,20 @@ public class Main {
 			Game.revealCell(frame, selection);
 			
 			Game.displayFrame(frame);
+			
+			
+			if (frame[selection.x][selection.y].hasMine) {
+				isLost = true;
+			}
+			
 		
 			if (isWon) {
+				
 				isFinished = true;
+				Game.stop(frame);
 			} else if (isLost) {
 				isFinished = true;
-				
+				Game.stop(frame);
 			}
 		
 		}
