@@ -5,6 +5,7 @@ public class Cell extends GameObject{
     protected String unrevealStr;
     protected String revealStr;
     protected boolean isRevealed;
+    protected int numMineArround;
     
     public Cell(int x, int y, boolean hasMine, String unrevealStr, String revealStr, boolean isRevealed) {
 		this.x = x;
@@ -20,6 +21,15 @@ public class Cell extends GameObject{
 		this.y = y;
 		this.hasMine = false;
 		this.unrevealStr = "";
+		this.revealStr = "";
+		this.isRevealed = false;
+	}
+    
+    public Cell(int x, int y, String unrevealStr) {
+		this.x = x;
+		this.y = y;
+		this.hasMine = false;
+		this.unrevealStr = unrevealStr;
 		this.revealStr = "";
 		this.isRevealed = false;
 	}
@@ -48,8 +58,13 @@ public class Cell extends GameObject{
     		this.revealStr = "[*]";
     }
     
-    public void setMineNum(int mineNumArround) {
-		this.revealStr = "["+ String.valueOf(mineNumArround) + "]";
+    public void setMineNumStr(int numMineArround) {
+		this.revealStr = "["+ String.valueOf(numMineArround) + "]";
+    }
+    
+    public void setMineNumArround(int numMineArround) {
+    	this.numMineArround = numMineArround;
+    	setMineNumStr(numMineArround);
     }
     
     public void reveal() {

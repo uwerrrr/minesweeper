@@ -11,10 +11,15 @@ public class Main {
 
 	public static void main(String[] args) {
 		
+
+		System.out.println("Welcome to minesweeper game!!");
+		System.out.println("A game that would blow your mind away...");
+		
+		
 		final int gameRow = 10;
 		final int gameCol = 10;
 		
-		int mineNum = 8;
+		int mineNum = 10;
 		boolean isWon = false;
 		boolean isLost = false;
 		
@@ -52,22 +57,20 @@ public class Main {
 			Selection selection = new Selection(selectedX, selectedY);
 			Cell selectedCell = frame[selection.x][selection.y];
 			
-			selectedCell.reveal();
+		
 			
-	
 			
 			if (selectedCell.hasMine) {
-				Game.displayFrame(frame);
+				selectedCell.reveal();
 				isLost = true;
 			} else {
-				Game.displayFrame(frame);
-				++selectedCellNum;
-				if (selectedCellNum == safeCellNum) {
-					isWon = true;
-				}
+				Game.revealNeiCells(frame, selectedCell);
+				
+				isWon = Game.isWon(frame);
+				
 			}
 			
-			
+			Game.displayFrame(frame);
 			
 			
 			if (isWon) {
@@ -103,9 +106,6 @@ public class Main {
 		
   		// testing corner
 		
-//		for (Mine mine : mines) {
-//			mine.printCoor();
-//		}
 		
 //		int[][] testFr = {{1,2,3},{4,5,6}};
 //		

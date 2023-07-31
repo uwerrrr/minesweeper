@@ -71,7 +71,7 @@ public class Game {
 		int labelNum = 1;
 		for (int row = 0; row < frameRow; row++) {
 			for (int col = 0; col < frameCol; col++) {
-				Cell cell = new Cell(row, col, false, unrevealStr, "", false);
+				Cell cell = new Cell(row, col, unrevealStr);
 				
 		  		if(row == 0 && col == 0) {
 		  			cell.isRevealed = true;
@@ -129,7 +129,7 @@ public class Game {
 						
 						}
 					}
-					frame[row][col].setMineNum(count);
+					frame[row][col].setMineNumArround(count);
 					
 					
 				}
@@ -138,21 +138,46 @@ public class Game {
 	}
 
 	
-	public static void revealCell(Cell[][] frame, Cell selectedCell) {
-		selectedCell.reveal();
+	public static void revealNeiCells(Cell[][] frame, Cell selectedCell) {
+		int  currX = selectedCell.x;
+		int  currY = selectedCell.y;
+		
+		int minX = 1;
+		int minY = 1;
+		int maxX = frame.length-1;
+		int maxY = frame[0].length-1;
+		
+		
+		if (!frame[currX][currY].isRevealed && !frame[currX][currY].hasMine) {
+			frame[currX][currY].isRevealed = true; // Reveal the current cell
 			
-	}
-	
-	public static void revealNeiCells() {
+			if (frame[currX][currY].numMineArround == 0) {
+				int[]checkCoors = {-1,0,1};
+				for (int coorX : checkCoors){
+					for (int coorY : checkCoors) {
+						int newX = currX + coorX;
+						int newY = currY + coorY;
+						
+//						row >= 0 && row < grid.length && col >= 0 && col < grid[0].length;
+						
+						
+						if ( (minX <= newX && newX<= maxX && minY <= newY && newY<= maxY) && 
+								(newX != currX || newY != currY ) ) {
+							
+							Cell newCell = new Cell(newX, newY);
+							
+							// use recursive method -> run until the method no longer calls itself and the recursion stops
+							revealNeiCells(frame, newCell);
+						}
+		            
+					}
+				}
+			}
+				
+		}
 		
 	}
-//	int[]checkCoors = {-1,0,1};
-//	for (int coorX : checkCoors){
-//		for (int coorY : checkCoors) {
-//			int newX = coorX;
-//			int newY = coorY;
-//			
-//		}}	
+
 	
 	public static void stop(Cell[][] frame) {
 		for (Cell[] rows : frame) {
@@ -164,6 +189,15 @@ public class Game {
 	}
 	
 	
+	public static boolean isWon(Cell[][] frame) {
+		for (Cell[] rows : frame) {
+			for (Cell cell : rows) {
+				if (!(cell.hasMine) && !(cell.isRevealed)){
+					return false;
+				}
+			}}
+		return true;
+	}
 	
 	
 	// Validation inputs
