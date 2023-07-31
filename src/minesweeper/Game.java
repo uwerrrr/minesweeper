@@ -258,10 +258,13 @@ public class Game {
 			    selectedCoordinate = Integer.parseInt(input);
 			    break;} 
 		    else {
+		    		
 			    System.out.println("Invalid input. Please enter a valid integer for " + coordinateName + " coordinate.");
 //			
 			    }
 	    }
 	    return selectedCoordinate;
 	}
+	
+	
 }

@@ -3,6 +3,7 @@ package minesweeper;
 import java.util.ArrayList;
 
 import java.util.Arrays;
+import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.Scanner;
 import java.util.stream.Stream;
@@ -15,11 +16,51 @@ public class Main {
 		System.out.println("Welcome to minesweeper game!!");
 		System.out.println("A game that would blow your mind away...");
 		
+		// user input
+		Scanner s = new Scanner(System.in);
 		
-		final int gameRow = 10;
-		final int gameCol = 10;
 		
-		int mineNum = 10;
+		// user config
+		int gameRow;
+		int gameCol;
+		int slotNum;
+		int mineNum;
+	
+		while (true) {
+			try {
+				System.out.println("Please enter number of rows for the game");
+				gameRow = s.nextInt();
+				
+				System.out.println("Please enter number of columns for the game");
+				gameCol = s.nextInt();
+				
+				slotNum = gameRow * gameCol;
+				
+				System.out.println("Please enter mine number smaller than the available slots of " + slotNum);
+				mineNum = s.nextInt();
+				
+				if(mineNum >= slotNum) {
+					mineNum = slotNum;
+					System.out.println("You have entered number of mines larger than or equal to the available slots.");
+					System.out.println("To honor your choice, the number of mine will be " + mineNum + " for a game of " + slotNum + " slots.... ");
+					System.out.println("... :)");
+					System.out.println("... :)");
+					System.out.println("... :)");
+				}
+				
+				// nextInt does NOT move the cursor to next line automatically -> we need manually move the cursor to next line
+				s.nextLine();
+				
+				break;
+			}
+			catch(InputMismatchException e){
+				System.out.println("Invalid input. Please enter a valid integer.");
+				s.nextLine();
+			}	  
+		};
+		
+	
+		
 		boolean isWon = false;
 		boolean isLost = false;
 		
@@ -35,10 +76,6 @@ public class Main {
 		
 		// display frame
 		Game.displayFrame(frame);
-		
-		
-		// user input
-		Scanner s = new Scanner(System.in);
 		
 		
 		// loop until game finish
@@ -92,38 +129,6 @@ public class Main {
 		
 
 		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-  		// testing corner
-		
-		
-//		int[][] testFr = {{1,2,3},{4,5,6}};
-//		
-//		System.out.println(Arrays.deepToString(testFr));
-		
-		
-//		Mine testMine = new Mine(5,5);
-//		frame[testMine.x][testMine.y].setHasMine();
-//  		
-//		Selection selection1 = new Selection(5,5);
-//		frame[selection1.x][selection1.y].selected();
-//		
-//		Selection selection2 = new Selection(10,5);
-//		frame[selection2.x][selection2.y].selected();
-////		frame[selection2.x][selection2.y].setMineNum(3);
-//		
-////		Selection selection2 = new Selection(10,5);
-//		frame[10][6].selected();
 		
 
 		
