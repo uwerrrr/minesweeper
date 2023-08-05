@@ -55,7 +55,7 @@ public class Game {
 	  		
 	  		mines.add(tempMine);
 	  		
-	  		tempMine.printCoor();
+//	  		tempMine.printCoor();
 		}
 		
 		return mines;

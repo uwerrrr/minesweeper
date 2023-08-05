@@ -116,13 +116,23 @@ public class Main {
 				System.out.println("Congratulation!!!");
 				System.out.println("You won !!!!!!");
 				
+				
 			} else if (isLost) {
 				Game.isPlaying = false;
 				Game.stop(frame);
 				System.out.println("Game over!!!");
 				System.out.println("Better luck next time :)");
 			}
-		
+			
+//			if (!Game.isPlaying) {
+//				System.out.println("Try again ?? 'Y' or 'N'");
+//				String answer = s.nextLine();
+//				if (answer == "Y") {
+//					
+//				}
+//				
+//			}
+			
 		}
 		
 		s.close();
