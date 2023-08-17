@@ -2,7 +2,7 @@
 
 A minesweeper game running in CLI.
 
-Made by OScar NGUYEN.
+Made by [Oscar NGUYEN](https://github.com/uwerrrr).
 
 Built with JAVA.
 
