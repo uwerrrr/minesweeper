@@ -2,6 +2,8 @@
 
 A minesweeper game running in CLI.
 
+Classic but will blow your mind away!
+
 Made by [Oscar NGUYEN](https://github.com/uwerrrr).
 
 Built with JAVA.
